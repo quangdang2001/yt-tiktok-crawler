@@ -235,6 +235,7 @@ def upload_video(
     print("update_config", update_resp.json()["status_msg"])
 
     uploaded = False
+    retryAttemps = 0
     while True:
         try:
             mstoken = session.cookies.get("msToken")
@@ -266,13 +267,18 @@ def upload_video(
                 headers=headers,
             )
             try:
+                print("Post resp", r.content)
                 if r.json()["status_msg"] == "You are posting too fast. Take a rest.":
                     print("[-] You are posting too fast, try later again")
                     return False
                 uploaded = True
                 break
             except Exception as e:
-                print("[-] Waiting for TikTok to process video...")
+                print("[-] Waiting for TikTok to process video...", str(retryAttemps))
+                retryAttemps += 1
+                if retryAttemps >= 6:
+                    print("[-] Reach max retry attemps")
+                    return False
                 time.sleep(240)  # wait 1.5 seconds before asking again.
         except Exception as e:
             print("Got exception when proceess", e)
