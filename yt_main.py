@@ -98,7 +98,7 @@ def uploadMultiTimesYT(times):
 
 
 if __name__ == "__main__":
-    for i in range(10):
+    for i in range(20):
         logger.info("START Upload video # " + str(i))
         uploadToYouTube()
         logger.info("SUCCESSFUL upload video #" + str(i))

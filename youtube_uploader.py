@@ -6,7 +6,7 @@ def pinedream_payload(event):
         "operationName": "executeTestRequest",
         "query": "mutation executeTestRequest($ancestorIds: [String!], $childIds: [String!], $deploymentId: String!, $endNamespace: String, $endPhase: StepPhaseEnum, $lambdaMakerSuffix: String, $orgId: String, $sourceEmit: EmitInput, $startNamespace: String, $startPhase: StepPhaseEnum, $traceId: String, $triggerOnly: Boolean, $useLabyrinth: Boolean) {  my(orgId: $orgId) {    executeTestRequest(      ancestorIds: $ancestorIds      childIds: $childIds      deploymentId: $deploymentId      endStepNamespace: $endNamespace      endStepPhase: $endPhase      executionTraceId: $traceId      lambdaMakerSuffix: $lambdaMakerSuffix      sourceEmit: $sourceEmit      startStepNamespace: $startNamespace      startStepPhase: $startPhase      triggerOnly: $triggerOnly      useLabyrinth: $useLabyrinth    ) {      errors      executionTraceId      stepErrors {        namespace        error        __typename      }      __typename    }    __typename  }}",
         "variables": {
-            "deploymentId": "d_MOsy4RMW",
+            "deploymentId": "d_EksvRx6G",
             "endNamespace": "upload_video_1",
             "orgId": "o_v1IRzOb",
             "sourceEmit": {
@@ -17,7 +17,7 @@ def pinedream_payload(event):
                     "emitId": "2e72ir7NFXcON0wFScwxUBOF5aj",
                     "emitterId": "hi_eqHm2Oj",
                     "name": "",
-                    "summary": "GET /",
+                    "summary": "POST /",
                 },
             },
             "startNamespace": "upload_video",

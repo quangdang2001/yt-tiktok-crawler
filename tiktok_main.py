@@ -30,7 +30,7 @@ def uploadVidToTiktok():
     logger.info("Start upload video to tiktok")
     vid_id = getRandomVidId(1)[0]
     title = getRandomTitle()
-    tags = " #douyin #chinesegirl #hotgirls #beautifulgirls #cutegirls #beautiful #bodygoals #fashionstyle #model #dance #beauty #cosplay #longlegs #streetfashion #chinesebeauty #tiktok #gaixinh #chandai #quyenru #nongbong"
+    tags = " #douyin #hotgirls #cutegirls #beautiful #dance #beauty #cosplay #streetfashion #tiktok #gaixinh #chandai #quyenru #nongbong"
     title = title + tags
     prefix = "https://www.douyin.com/video/"
     logger.info("Start fetch video data")
