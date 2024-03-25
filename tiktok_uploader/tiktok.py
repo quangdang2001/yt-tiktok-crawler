@@ -276,7 +276,7 @@ def upload_video(
             except Exception as e:
                 print("[-] Waiting for TikTok to process video...", str(retryAttemps))
                 retryAttemps += 1
-                if retryAttemps >= 6:
+                if retryAttemps >= 10:
                     print("[-] Reach max retry attemps")
                     return False
                 time.sleep(240)  # wait 1.5 seconds before asking again.
