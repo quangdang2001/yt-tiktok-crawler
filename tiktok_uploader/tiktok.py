@@ -313,6 +313,7 @@ def upload_video(
                 params=project_post_dict,
                 data=json.dumps(data),
                 headers=headers,
+                auth=aws_auth,
             )
             try:
                 print("Post resp", r.content)
@@ -340,7 +341,6 @@ def upload_video(
     # Check if video uploaded successfully
     url = f"https://www.tiktok.com/api/v1/web/project/list/?aid=1988"
 
-    r = session.get(url)
     if not assert_success(url, r):
         return False
     # print(r.json()["infos"])
