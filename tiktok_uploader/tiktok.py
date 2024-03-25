@@ -27,16 +27,22 @@ def login(login_name: str):
         return session_cookie["value"]
 
     browser = Browser.get()
-    response = browser.driver.get(os.getenv("TIKTOK_LOGIN_URL"))
+    response = browser.driver.get("https://www.tiktok.com/upload?lang=vi")
 
     session_cookies = []
-    while not session_cookies:
-        for cookie in browser.driver.get_cookies():
-            if cookie["name"] in ["sessionid", "tt-target-idc"]:
-                if cookie["name"] == "sessionid":
-                    cookie_name = cookie
-                session_cookies.append(cookie)
-
+    # while not session_cookies:
+    #     for cookie in browser.driver.get_cookies():
+    #         if cookie["name"] in ["sessionid", "tt-target-idc"]:
+    #             if cookie["name"] == "sessionid":
+    #                 cookie_name = cookie
+    #             session_cookies.append(cookie)
+    time.sleep(60 * 5)
+    for cookie in browser.driver.get_cookies():
+        if cookie["name"] in ["sessionid", "tt-target-idc"]:
+            if cookie["name"] == "sessionid":
+                cookie_name = cookie
+        session_cookies.append(cookie)
+    print(session_cookies)
     # print("Session cookie found: ", session_cookie["value"])
     print("Account successfully saved.")
     browser.save_cookies(f"tiktok_session-{login_name}", session_cookies)
@@ -66,8 +72,27 @@ def upload_video(
         print("[-] Could not get random user agent, using default")
 
     cookies = load_cookies_from_file(f"tiktok_session-{session_user}")
+
     session_id = next((c["value"] for c in cookies if c["name"] == "sessionid"), None)
     dc_id = next((c["value"] for c in cookies if c["name"] == "tt-target-idc"), None)
+    csrfToken = next((c["value"] for c in cookies if c["name"] == "csrfToken"), None)
+    csrf_session_id = next(
+        (c["value"] for c in cookies if c["name"] == "csrf_session_id"), None
+    )
+    msToken = next((c["value"] for c in cookies if c["name"] == "msToken"), None)
+    store_idc = next((c["value"] for c in cookies if c["name"] == "store-idc"), None)
+    tt_target_idc_sign = next(
+        (c["value"] for c in cookies if c["name"] == "tt-target-idc-sign"), None
+    )
+    tt_chain_token = next(
+        (c["value"] for c in cookies if c["name"] == "tt_chain_token"), None
+    )
+    tt_csrf_token = next(
+        (c["value"] for c in cookies if c["name"] == "tt_csrf_token"), None
+    )
+    sessionid_ss = next(
+        (c["value"] for c in cookies if c["name"] == "sessionid_ss"), None
+    )
 
     if not session_id:
         eprint("No cookie with Tiktok session id found: use login to save session id")
@@ -99,17 +124,29 @@ def upload_video(
     session = requests.Session()
     session.cookies.set("sessionid", session_id, domain=".tiktok.com")
     session.cookies.set("tt-target-idc", dc_id, domain=".tiktok.com")
+    session.cookies.set("csrfToken", csrfToken, domain=".tiktok.com")
+    session.cookies.set("csrf_session_id", csrf_session_id, domain=".tiktok.com")
+    # session.cookies.set("msToken", msToken, domain=".tiktok.com")
+    session.cookies.set("store-country-code", "vn", domain=".tiktok.com")
+    session.cookies.set("store-country-code-src", "vn", domain=".tiktok.com")
+    session.cookies.set("store-idc", store_idc, domain=".tiktok.com")
+    session.cookies.set("tt-target-idc-sign", tt_target_idc_sign, domain=".tiktok.com")
+    session.cookies.set("tt_chain_token", tt_chain_token, domain=".tiktok.com")
+    session.cookies.set("tt_csrf_token", tt_csrf_token, domain=".tiktok.com")
+    session.cookies.set("sessionid_ss", sessionid_ss, domain=".tiktok.com")
+
     session.verify = True
 
     headers = {
         "User-Agent": user_agent,
         "Accept": "application/json, text/plain, */*",
+        "Tt-Csrf-Token": session.cookies.get("csrfToken"),
     }
     session.headers.update(headers)
 
     # Setting proxy if provided.
-    if proxy:
-        session.proxies = {"http": proxy, "https": proxy}
+    # if proxy:
+    #     session.proxies = {"http": proxy, "https": proxy}
 
     creation_id = generate_random_string(21, True)
     project_url = f"https://www.tiktok.com/api/v1/web/project/create/?creation_id={creation_id}&type=1&aid=1988"
@@ -181,7 +218,18 @@ def upload_video(
     if not assert_success(url, r):
         return False
 
-    headers = {"content-type": "application/json", "user-agent": user_agent}
+    headers = {
+        "content-type": "application/json",
+        "Accept": "application/json, text/plain, */*",
+        "user-agent": user_agent,
+        "Tt-Csrf-Token": session.cookies.get("csrfToken"),
+        "Cookie": "; ".join(
+            [f"{key}={value}" for key, value in session.cookies.get_dict().items()]
+        ),
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-Dest": "empty",
+    }
     brand = ""
 
     if brand and brand[-1] == ",":
@@ -205,7 +253,7 @@ def upload_video(
             "is_uploaded_in_batch": False,
             "is_enable_playlist": False,
             "is_added_to_playlist": False,
-            "tcm_params": '{"commerce_toggle_info":' + brand + "}",
+            "tcm_params": r'"{\"commerce_toggle_info\":{}}"',
             "aigc_info": {"aigc_label_type": ai_label},
         },
         "project_id": project_id,
@@ -217,7 +265,7 @@ def upload_video(
     if schedule_time:
         data["upload_param"]["schedule_time"] = schedule_time + int(time.time())
     print("Waiting to finish processing video in Tiktok")
-    time.sleep(30)  # Waiting for 20 minutes
+    time.sleep(5)  # Waiting for 20 minutes
     print("Start click on POST")
 
     url_config_update = (
@@ -235,6 +283,7 @@ def upload_video(
     print("update_config", update_resp.json()["status_msg"])
 
     uploaded = False
+    retryAttemps = 0
     while True:
         try:
             mstoken = session.cookies.get("msToken")
@@ -266,14 +315,19 @@ def upload_video(
                 headers=headers,
             )
             try:
+                print("Post resp", r.content)
                 if r.json()["status_msg"] == "You are posting too fast. Take a rest.":
                     print("[-] You are posting too fast, try later again")
                     return False
                 uploaded = True
                 break
             except Exception as e:
-                print("[-] Waiting for TikTok to process video...")
-                time.sleep(240)  # wait 1.5 seconds before asking again.
+                print("[-] Waiting for TikTok to process video...", str(retryAttemps))
+                retryAttemps += 1
+                if retryAttemps >= 100:
+                    print("[-] Reach max retry attemps")
+                    return False
+                time.sleep(0.5)  # wait 1.5 seconds before asking again.
         except Exception as e:
             print("Got exception when proceess", e)
 
@@ -384,30 +438,17 @@ def upload_to_tiktok(video_file, session):
 
 
 if __name__ == "__main__":
-    # Testing login function
-    # login("test")
-    ms_token = ""
-    # path = os.path.join(os.getcwd(), "./x-bogus.js")
-    # print(path)
-    # print(user_agent)
-    base_url = "https://www.tiktok.com/api/v1/web/project/post/"
-    url = f"?app_name=tiktok_web&channel=tiktok_web&device_platform=web&aid=1988&msToken={ms_token}"
-    # xbogus = subprocess_jsvmp(path, user_agent, url)
-    # print(xbogus)
-
-    path = os.path.join(os.getcwd(), "tiktok-signature", "browser.js")
-    proc = subprocess.Popen(
-        ["node", path, base_url + url, "agent123"], stdout=subprocess.PIPE
-    )
-    output = proc.stdout.read().decode("utf-8")
-    json_output = json.loads(output)["data"]
-    print(json_output)
-    print(
-        f""
-        f"X-Bogus: {json_output['x-bogus']}\n"
-        f"Signature: {json_output['signature']}\n"
-        f"Signed URL: {json_output['signed_url']}\n"
-        f"X TT Params: {json_output['x-tt-params']}\n"
-        f"User Agent: {json_output['navigator']['user_agent']}\n"
-        f""
+    upload_video(
+        "letdat",
+        "https://v5-dy-o-abtest.zjcdn.com/86a7d115ce73c1f9025781a4517a2933/66018e01/video/tos/cn/tos-cn-ve-15/oUDQPANhGgDAyKoDZEBjerA1BPI9fnAJzHRgbU/?a=1128&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=1157&bt=1157&cs=0&ds=6&ft=iusdFLqoQmo0PDwYfxnaQ950U4i6JE.C~&mime_type=video_mp4&qs=0&rc=Ozk7N2Y1NzU4OzxoPDw5OkBpM2l4bTo6Zjg0ajMzNGkzM0A2YWA2YC41Xi8xYzIyMzYxYSNoanBgcjQwMGJgLS1kLTBzcw%3D%3D&btag=10e00088000&cc=46&cquery=100d&dy_q=1711374313&feature_id=59cb2766d89ae6284516c6a254e9fb61&l=202403252145135CE6809A80C85412C3EC",
+        "test",
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        None,
     )
