@@ -40,33 +40,26 @@ def handler(vid_list):
     return r
 
 
-def uploadToYouTube():
+def uploadToYouTube(account):
     data = {"video_ids": getRandomVidId(1)}
     video_info = {
         "tag": [
             "douyin",
             "chinesegirl",
-            "hotgirls",
-            "beautifulgirls",
-            "cutegirls",
-            "beautifulchinesegirls",
             "bodygoals",
             "fashionstyle",
             "model",
             "dance",
             "beauty",
             "cosplay",
-            "sexylegs",
-            "asianbeauty",
             "streetfashion",
-            "chinesebeauty",
             "tiktok",
             "gaixink",
             "chandai",
             "quyenru",
             "nongbong",
         ],
-        "des": "Kênh chuyên về tiktok, douyin gái xink Trung Quốc. #douyin #chinesegirl #hotgirls #beautifulgirls #cutegirls #beautifulchinesegirls #bodygoals #fashionstyle #model #dance #beauty #cosplay #sexylegs #asianbeauty #streetfashion #chinesebeauty #tiktok",
+        "des": "Kênh chuyên về tiktok, douyin gái xink Trung Quốc. #douyin #chinesegirl #bodygoals #fashionstyle #model #dance #beauty #cosplay  #streetfashion #tiktok",
     }
     video_datas_fetch = handler(data["video_ids"])
     video_datas_transform = []
@@ -85,21 +78,27 @@ def uploadToYouTube():
         print("DONE generate data", video["url"])
         video_datas_transform.append(temp)
     print("Trigger Upload YouTube Video")
-    youtubeUploader(video_datas_transform)
+    youtubeUploader(video_datas_transform, account)
 
 
-def uploadMultiTimesYT(times):
+def uploadMultiTimesYT(times, account):
     for i in range(times):
-        print("Upload video #", i)
-        uploadToYouTube()
-        logger.info("Success upload video #" + str(i))
-        # print("Success upload video #" + i)
+        logger.info("START Upload video # " + str(i))
+        uploadToYouTube(account)
+        logger.info("SUCCESSFUL upload video #" + str(i))
         time.sleep(10)
 
 
 if __name__ == "__main__":
-    for i in range(20):
-        logger.info("START Upload video # " + str(i))
-        uploadToYouTube()
-        logger.info("SUCCESSFUL upload video #" + str(i))
-        time.sleep(10)
+    logger.info(
+        "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Douyin Girl [++++++++++++++++++++++++++++++++++++++++++++++]"
+    )
+    uploadMultiTimesYT(20, "upload_video")
+    logger.info(
+        "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Miny Girl [++++++++++++++++++++++++++++++++++++++++++++++]"
+    )
+    uploadMultiTimesYT(20, "upload_video_1")
+    logger.info(
+        "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Xinh Mina [++++++++++++++++++++++++++++++++++++++++++++++]"
+    )
+    uploadMultiTimesYT(20, "upload_video_2")

@@ -1,37 +1,37 @@
 import requests
 
 
-def pinedream_payload(event):
+def pinedream_payload(event, account):
     return {
         "operationName": "executeTestRequest",
         "query": "mutation executeTestRequest($ancestorIds: [String!], $childIds: [String!], $deploymentId: String!, $endNamespace: String, $endPhase: StepPhaseEnum, $lambdaMakerSuffix: String, $orgId: String, $sourceEmit: EmitInput, $startNamespace: String, $startPhase: StepPhaseEnum, $traceId: String, $triggerOnly: Boolean, $useLabyrinth: Boolean) {  my(orgId: $orgId) {    executeTestRequest(      ancestorIds: $ancestorIds      childIds: $childIds      deploymentId: $deploymentId      endStepNamespace: $endNamespace      endStepPhase: $endPhase      executionTraceId: $traceId      lambdaMakerSuffix: $lambdaMakerSuffix      sourceEmit: $sourceEmit      startStepNamespace: $startNamespace      startStepPhase: $startPhase      triggerOnly: $triggerOnly      useLabyrinth: $useLabyrinth    ) {      errors      executionTraceId      stepErrors {        namespace        error        __typename      }      __typename    }    __typename  }}",
         "variables": {
-            "deploymentId": "d_EksvRx6G",
-            "endNamespace": "upload_video_1",
+            "deploymentId": "d_5Zsk6ZJk",
+            "endNamespace": account,
             "orgId": "o_v1IRzOb",
             "sourceEmit": {
                 "event": event,
                 "indexId": "1711241425886-0",
                 "indexedAtMs": 1711241425886,
                 "metadata": {
-                    "emitId": "2e72ir7NFXcON0wFScwxUBOF5aj",
+                    "emitId": "2eBjgVSCmTbY8JGKfoSTGEuv7Fm",
                     "emitterId": "hi_eqHm2Oj",
                     "name": "",
                     "summary": "POST /",
                 },
             },
-            "startNamespace": "upload_video",
+            "startNamespace": account,
         },
     }
 
 
-def youtubeUploader(event):
+def youtubeUploader(event, account):
     url = "https://api.pipedream.com/graphql"
     header = {
         "Content-Type": "application/json",
         "cookie": "pdsid=ba7b93f08891f801761d9c7de3b82233",
     }
-    payload = pinedream_payload(event)
+    payload = pinedream_payload(event, account)
     resp = requests.post(url=url, json=payload, headers=header)
     if resp.status_code == 200:
         print("Upload success", event[0]["title"])
