@@ -14,11 +14,12 @@ def list_files_in_folder(folder_path):
 
 
 def getRandomVidId(number):
-    folder_path = "video_ids"
+    folder_path = "videos_quality/"
     full_path = os.path.join(os.getcwd(), folder_path)
     file_names = list_files_in_folder(full_path)
 
-    file_name = "video_ids/" + random.choice(file_names)
+    file_name = folder_path + random.choice(file_names)
+
     print("Prcess file", file_name)
     with open(file_name, "r", encoding="utf8") as file:
         # Read all lines into a list

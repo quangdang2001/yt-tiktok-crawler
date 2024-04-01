@@ -39,7 +39,7 @@ def uploadVidToTiktok():
     logger.info("Fetch video data DONE")
     logger.info("Start upload to Tiktok")
     return tiktok.upload_video(
-        "quangdangver02",
+        "quangver02_1",
         video_url,
         title,
         0,

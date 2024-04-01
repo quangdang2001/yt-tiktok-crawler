@@ -27,7 +27,7 @@ def login(login_name: str):
         return session_cookie["value"]
 
     browser = Browser.get()
-    response = browser.driver.get(os.getenv("TIKTOK_LOGIN_URL"))
+    response = browser.driver.get("https://www.tiktok.com/upload?lang=en")
 
     session_cookies = []
     while not session_cookies:
@@ -276,10 +276,10 @@ def upload_video(
             except Exception as e:
                 print("[-] Waiting for TikTok to process video...", str(retryAttemps))
                 retryAttemps += 1
-                if retryAttemps >= 10:
+                if retryAttemps >= 100:
                     print("[-] Reach max retry attemps")
                     return False
-                time.sleep(240)  # wait 1.5 seconds before asking again.
+                time.sleep(1.5)  # wait 1.5 seconds before asking again.
         except Exception as e:
             print("Got exception when proceess", e)
 
