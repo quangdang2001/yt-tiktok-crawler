@@ -23,6 +23,7 @@ def get_quality_vid():
     folder_path = "video_ids"
     full_path = os.path.join(os.getcwd(), folder_path)
     file_names = list_files_in_folder(full_path)
+    print(file_names)
     vid_approved = []
     total_vid = 0
     random_final_file_name = str(uuid.uuid4())

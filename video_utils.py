@@ -106,13 +106,12 @@ def fetch_videos(number):
 
 
 def merge_vid():
-    max_vid_fetch = 4
+    max_vid_fetch = 3
     videos = fetch_videos(max_vid_fetch)
     loaded_video_list = []
     loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
     loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
     loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[3]).resize(height=1920))
     final_clip = concatenate_videoclips(loaded_video_list, method="compose")
     final_clip.write_videofile(f"result/1.mp4")
 
@@ -121,21 +120,48 @@ def merge_vid():
     loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
     loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
     loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[3]).resize(height=1920))
     final_clip = concatenate_videoclips(loaded_video_list, method="compose")
     final_clip.write_videofile(f"result/2.mp4")
 
-    videos = fetch_videos(2)
+    videos = fetch_videos(max_vid_fetch)
     loaded_video_list = []
     loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
     loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
     final_clip = concatenate_videoclips(loaded_video_list, method="compose")
     final_clip.write_videofile(f"result/3.mp4")
+
+    videos = fetch_videos(max_vid_fetch)
+    loaded_video_list = []
+    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    final_clip.write_videofile(f"result/4.mp4")
+
+    videos = fetch_videos(max_vid_fetch)
+    loaded_video_list = []
+    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    final_clip.write_videofile(f"result/5.mp4")
+
+    videos = fetch_videos(max_vid_fetch)
+    loaded_video_list = []
+    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    final_clip.write_videofile(f"result/6.mp4")
 
     loaded_video_list = []
     loaded_video_list.append(VideoFileClip("result/1.mp4").resize(height=1920))
     loaded_video_list.append(VideoFileClip("result/2.mp4").resize(height=1920))
     loaded_video_list.append(VideoFileClip("result/3.mp4").resize(height=1920))
+    loaded_video_list.append(VideoFileClip("result/4.mp4").resize(height=1920))
+    loaded_video_list.append(VideoFileClip("result/5.mp4").resize(height=1920))
+    loaded_video_list.append(VideoFileClip("result/6.mp4").resize(height=1920))
     final_clip = concatenate_videoclips(loaded_video_list, method="compose")
     final_clip.write_videofile(f"result/{merged_video_name}.mp4")
 
@@ -213,4 +239,4 @@ if __name__ == "__main__":
     #         "https://v11-o.douyinvod.com/14409f23af5dedb2709bfe400ae4d60e/66085ee9/video/tos/cn/tos-cn-v-0015c800/13e6045afec241e2bb9c937e5a46d9d9/?a=1128&ch=0&cr=0&dr=0&cd=0%7C0%7C0%7C0&cv=1&br=9650&bt=9650&ds=4&ft=iusdFLqoQmo0PD6zYNnaQ950U4i6JE.C~&mime_type=video_mp4&qs=13&rc=ajx4NWY6ZmwzOjMzNGkzM0Bpajx4NWY6ZmwzOjMzNGkzM0BmZ2hmcjQwbzVgLS1kLWFzYSNmZ2hmcjQwbzVgLS1kLWFzcw%3D%3D&btag=10e00048000&cc=3e&cquery=100y&dy_q=1711821008&l=202403310150087EE6153A3FA44ED9C777",
     #     ]
     # )
-    create_summary_video()
+    merge_vid()
