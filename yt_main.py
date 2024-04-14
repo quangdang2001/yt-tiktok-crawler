@@ -100,10 +100,27 @@ def uploadToYouTube(config):
     return True
 
 
+def uploadLongVid(config):
+    vid = create_summary_video()
+    random_title = getRandomTitle()
+    print("Process ", random_title)
+    title = random_title
+    video_datas_transform = {
+        "url": vid["url"],
+        "link_download": vid["url"],
+        "tags": video_info["tag"],
+        "title": title,
+        "des": video_info["des"],
+    }
+    youtubeUploader([video_datas_transform], config)
+    return True
+
+
 def uploadMultiTimesYT(times, config):
     for i in range(times):
         logger.info("START Upload video # " + str(i))
-        result = uploadToYouTube(config)
+        # result = uploadToYouTube(config)
+        result = uploadLongVid(config)
         if result:
             logger.info("SUCCESSFUL upload video #" + str(i))
         else:
@@ -176,3 +193,6 @@ if __name__ == "__main__":
         "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Ana Mie (threeguytravel) [++++++++++++++++++++++++++++++++++++++++++++++]"
     )
     uploadMultiTimesYT(10, pinedream_config["threeguytravel"])
+
+    time.sleep(120)
+    delete_resource()

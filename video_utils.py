@@ -57,7 +57,7 @@ cloudinary.config(
 #     f"yt/{randome_vid_id}", resource_type="video", type="upload"
 # )
 # print(json.dumps(delete_resp))
-merged_video_name = "result_vid"
+merged_video_name = "1"
 
 
 def handler(vid_list):
@@ -115,55 +115,55 @@ def merge_vid():
     final_clip = concatenate_videoclips(loaded_video_list, method="compose")
     final_clip.write_videofile(f"result/1.mp4")
 
-    videos = fetch_videos(max_vid_fetch)
-    loaded_video_list = []
-    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-    final_clip.write_videofile(f"result/2.mp4")
+    # videos = fetch_videos(max_vid_fetch)
+    # loaded_video_list = []
+    # loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    # final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    # final_clip.write_videofile(f"result/2.mp4")
 
-    videos = fetch_videos(max_vid_fetch)
-    loaded_video_list = []
-    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-    final_clip.write_videofile(f"result/3.mp4")
+    # videos = fetch_videos(max_vid_fetch)
+    # loaded_video_list = []
+    # loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    # final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    # final_clip.write_videofile(f"result/3.mp4")
 
-    videos = fetch_videos(max_vid_fetch)
-    loaded_video_list = []
-    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-    final_clip.write_videofile(f"result/4.mp4")
+    # videos = fetch_videos(max_vid_fetch)
+    # loaded_video_list = []
+    # loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    # final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    # final_clip.write_videofile(f"result/4.mp4")
 
-    videos = fetch_videos(max_vid_fetch)
-    loaded_video_list = []
-    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-    final_clip.write_videofile(f"result/5.mp4")
+    # videos = fetch_videos(max_vid_fetch)
+    # loaded_video_list = []
+    # loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    # final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    # final_clip.write_videofile(f"result/5.mp4")
 
-    videos = fetch_videos(max_vid_fetch)
-    loaded_video_list = []
-    loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
-    loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
-    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-    final_clip.write_videofile(f"result/6.mp4")
+    # videos = fetch_videos(max_vid_fetch)
+    # loaded_video_list = []
+    # loaded_video_list.append(VideoFileClip(videos[0]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[1]).resize(height=1920))
+    # loaded_video_list.append(VideoFileClip(videos[2]).resize(height=1920))
+    # final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    # final_clip.write_videofile(f"result/6.mp4")
 
-    loaded_video_list = []
-    loaded_video_list.append(VideoFileClip("result/1.mp4").resize(height=1920))
-    loaded_video_list.append(VideoFileClip("result/2.mp4").resize(height=1920))
-    loaded_video_list.append(VideoFileClip("result/3.mp4").resize(height=1920))
-    loaded_video_list.append(VideoFileClip("result/4.mp4").resize(height=1920))
-    loaded_video_list.append(VideoFileClip("result/5.mp4").resize(height=1920))
-    loaded_video_list.append(VideoFileClip("result/6.mp4").resize(height=1920))
-    final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-    final_clip.write_videofile(f"result/{merged_video_name}.mp4")
+    # loaded_video_list = []
+    # loaded_video_list.append(VideoFileClip("result/1.mp4").resize(height=1920))
+    # loaded_video_list.append(VideoFileClip("result/2.mp4").resize(height=1920))
+    # loaded_video_list.append(VideoFileClip("result/3.mp4").resize(height=1920))
+    # loaded_video_list.append(VideoFileClip("result/4.mp4").resize(height=1920))
+    # loaded_video_list.append(VideoFileClip("result/5.mp4").resize(height=1920))
+    # loaded_video_list.append(VideoFileClip("result/6.mp4").resize(height=1920))
+    # final_clip = concatenate_videoclips(loaded_video_list, method="compose")
+    # final_clip.write_videofile(f"result/{merged_video_name}.mp4")
 
 
 def create_summary_video():
@@ -196,9 +196,7 @@ def create_summary_video():
 
 
 def delete_resource(public_id):
-    delete_resp = cloudinary.api.delete_resources(
-        public_id, resource_type="video", type="upload"
-    )
+    delete_resp = cloudinary.api.delete_resources_by_prefix("yt/")
     print("Deleted summary video in cloudinary SUCCESS")
 
 

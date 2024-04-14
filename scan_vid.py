@@ -43,7 +43,7 @@ def get_quality_vid():
                 logger.error("Fetch Failed for " + vid_id)
                 print(e)
                 continue
-            if vid_info != None and vid_info["medias"][0]["size"] >= 11264000:
+            if vid_info != None and vid_info["medias"][0]["quality"] == "hd":
                 logger.info("APPROVED")
                 vid_approved.append(vid_id)
                 with open(f"videos_quality/video_ids.txt", "a") as file:
