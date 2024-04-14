@@ -3,7 +3,6 @@ import requests, time
 from title_generator import getRandomTitle
 from video_ids_random import getRandomVidId
 from youtube_uploader import youtubeUploader, pinedream_config
-from tiktok_uploader import tiktok
 from common import get_video_info
 from Logger import logger
 from video_utils import create_summary_video, delete_resource
@@ -176,23 +175,23 @@ if __name__ == "__main__":
     logger.info(
         "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Douyin Girl (quangdang20013) [++++++++++++++++++++++++++++++++++++++++++++++]"
     )
-    uploadMultiTimesYT(10, pinedream_config["quangdang20013"])
-    logger.info(
-        "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Miny Girl (ledat3002) [++++++++++++++++++++++++++++++++++++++++++++++]"
-    )
-    uploadMultiTimesYT(10, pinedream_config["ledat3002"])
+    uploadMultiTimesYT(15, pinedream_config["quangdang20013"])
+    # logger.info(
+    #     "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Miny Girl (ledat3002) [++++++++++++++++++++++++++++++++++++++++++++++]"
+    # )
+    # uploadMultiTimesYT(10, pinedream_config["ledat3002"])
     logger.info(
         "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Xinh Mina (quangdang2001ver2) [++++++++++++++++++++++++++++++++++++++++++++++]"
     )
-    uploadMultiTimesYT(10, pinedream_config["quangdang2001ver2"])
+    uploadMultiTimesYT(15, pinedream_config["quangdang2001ver2"])
     logger.info(
         "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS NyMie (nmy786646) [++++++++++++++++++++++++++++++++++++++++++++++]"
     )
-    uploadMultiTimesYT(10, pinedream_config["nmy786646"])
+    uploadMultiTimesYT(15, pinedream_config["nmy786646"])
     logger.info(
         "[++++++++++++++++++++++++++++++++++++++++++++++] PROCESS Ana Mie (threeguytravel) [++++++++++++++++++++++++++++++++++++++++++++++]"
     )
-    uploadMultiTimesYT(10, pinedream_config["threeguytravel"])
+    uploadMultiTimesYT(15, pinedream_config["threeguytravel"])
 
     time.sleep(120)
     delete_resource()

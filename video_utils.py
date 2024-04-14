@@ -22,42 +22,27 @@ cloudinary.config(
     secure=False,
 )
 
-# video_file_list = [
-#     "https://v5-dy-o-abtest.zjcdn.com/8fe2320d58780ca6be2452f4324fbdc0/6607a791/video/tos/cn/tos-cn-ve-15/osPeD9hLST99npDJA8A5Q4gIztAAfAMzMB1yKE/?a=1128&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=581&bt=581&cs=0&ds=6&ft=iusdFLqoQmo0PDpQj4naQ950U4i6JE.C~&mime_type=video_mp4&qs=0&rc=NTQ3Z2Q8ZTQ2Ozo6Zzk6aUBpam07eTY6ZnZucTMzNGkzM0AuMl4tYmNeNjIxNGM2LjQtYSM0bS9ycjRvLWhgLS1kLTBzcw%3D%3D&btag=10e00088000&cc=46&cquery=103R_103S_100d_104i_103Q&dy_q=1711774071&feature_id=f0150a16a324336cda5d6dd0b69ed299&l=20240330124750DFCDCD02A7C1BC71D455",
-#     "https://v5-dy-o-abtest.zjcdn.com/6fd965c19785015192818f4dd33e1ee6/6607a865/video/tos/cn/tos-cn-ve-15/oUVbEeLsA0g9BnN7IAQAlsrKfwDAzlnDgNBMQX/?a=1128&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=570&bt=570&cs=0&ds=6&ft=iusdFLqoQmo0PD6Uj4naQ950U4i6JE.C~&mime_type=video_mp4&qs=0&rc=ZWRlOjxnaTNoNzo0Z2g7NUBpM3dvNTk6ZnM3cTMzNGkzM0AvL18vNC0tNS0xNS8yXzBiYSNkLXBvcjRfMjNgLS1kLTBzcw%3D%3D&btag=50e00088000&cc=46&cquery=104i_103Q_103R_103S_100d&dy_q=1711774288&feature_id=f0150a16a324336cda5d6dd0b69ed299&l=20240330125128D797F0FCA824C07685CF",
-#     "https://v3-dy-o.zjcdn.com/c186267fc29713da6337938c6a3ffca5/6607a8d7/video/tos/cn/tos-cn-ve-15c001-alinc2/ogK9nDg5QflgM4AfIBJB0D8DBR4nQAbKkLABBr/?a=1128&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=1278&bt=1278&cs=0&ds=6&ft=4iuxFMZj8Zmo0A_NF-4jV~m9FAWrKsd.&mime_type=video_mp4&qs=0&rc=ODM4ZmlkNzg1PDU7N2doOUBpM3Rscjw6ZnRkbzMzNGkzM0BiMzYyXjIxNmAxL14xYC42YSNiYDQ0cjRvLS9gLS1kLTBzcw%3D%3D&btag=50e00088000&cc=1f&cquery=104i_103Q_103R_103S_100d&dy_q=1711774398&feature_id=f0150a16a324336cda5d6dd0b69ed299&l=202403301253183623CA292DE6BC771739",
-# ]
-
-
-# loaded_video_list = []
-
-# for video in video_file_list:
-#     print(f"Adding video file:{video}")
-#     video_file_clip = VideoFileClip(video)
-#     loaded_video_list.append(video_file_clip)
-
-# final_clip = concatenate_videoclips(loaded_video_list, method="compose")
-# merged_video_name = "test_vid"
-
-# final_clip.write_videofile(f"result/{merged_video_name}.mp4")
-
-# randome_vid_id = str(uuid.uuid4())
-
-# upload_resp = cloudinary.uploader.upload_large(
-#     f"result/{merged_video_name}.mp4",
-#     resource_type="video",
-#     public_id=randome_vid_id,
-#     folder="yt",
-#     chunk_size=6000000,
-# )
-# print(json.dumps(upload_resp))
-
-
-# delete_resp = cloudinary.api.delete_resources(
-#     f"yt/{randome_vid_id}", resource_type="video", type="upload"
-# )
-# print(json.dumps(delete_resp))
 merged_video_name = "1"
+
+
+def download_video(url, save_path):
+    try:
+        # Send a GET request to the URL to download the video
+        response = requests.get(url, stream=True)
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Open a file in binary write mode to save the video
+            with open(save_path, "wb") as file:
+                # Iterate over the content of the response and write it to the file
+                for chunk in response.iter_content(chunk_size=1024):
+                    if chunk:
+                        file.write(chunk)
+            print("Video downloaded successfully!")
+        else:
+            print("Failed to download video. Status code:", response.status_code)
+    except Exception as e:
+        print("An error occurred:", e)
 
 
 def handler(vid_list):
@@ -84,8 +69,8 @@ def fetch_videos(number):
             print("Fetch video failed will retry")
             continue
         video_data = video_datas_fetch[0]
-        if video_data["medias"][0]["size"] < 11264000:
-            print("Video quality is lower than 11MB, skipp")
+        if video_data["medias"][0]["quality"] != "hd":
+            print("Video quality is not hd quality, skipp")
             continue
         final_video_fetch.append(video_datas_fetch[0])
         logger.info(
@@ -98,9 +83,11 @@ def fetch_videos(number):
     urls = []
     thumbnails = []
 
-    for video in final_video_fetch:
-        print("Append Link", video["url"])
-        urls.append(video["medias"][0]["url"])
+    for index, video in enumerate(final_video_fetch):
+        print("Download Link", video["url"])
+        vid_path = f"tempvid/{index}.mp4"
+        download_video(video["medias"][0]["url"], vid_path)
+        urls.append(vid_path)
         thumbnails.append(video["thumbnail"])
     return urls
 
